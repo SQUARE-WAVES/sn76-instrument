@@ -1,0 +1,1 @@
+Avr code for a board which interfaces two sn76 chips to an ATMega32u4. Clocks are controlled via spi and such.
