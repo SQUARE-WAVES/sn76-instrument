@@ -26,28 +26,28 @@ void execute_command()
 			{
 				dac = (cmd_buff[4] << 8) | cmd_buff[5];
 				set_clock(cmd_buff[2],cmd_buff[3],dac);
-				usb_serial_write("clk_exec\n",9);
+				usb_serial_write((const uint8_t*)"clk_exec\n",9);
 			}
 		break;
 		case SET_AMP:
 			if(len() == 4)
 			{
 				set_amp(cmd_buff[2],cmd_buff[3],cmd_buff[4]);
-				usb_serial_write("amp_exec\n",9);
+				usb_serial_write((const uint8_t*)"amp_exec\n",9);
 			}
 		break;
 		case SET_FREQ:
 			if(len() == 5)
 			{
 				set_freq(cmd_buff[2],cmd_buff[3],cmd_buff[4],cmd_buff[5]);
-				usb_serial_write("frq_exec\n",9);
+				usb_serial_write((const uint8_t*)"frq_exec\n",9);
 			}
 		break;
 		case SET_NOISE:
 			if(len() == 3)
 			{
 				set_noise(cmd_buff[2],cmd_buff[3]);
-				usb_serial_write("nzz_exec\n",9);
+				usb_serial_write((const uint8_t*)"nzz_exec\n",9);
 			}
 		break;
 		case WRITE_CHIP: //low level for debug
@@ -56,7 +56,7 @@ void execute_command()
 				select_chip(cmd_buff[2]);
 				write_chip(cmd_buff[2],cmd_buff[3]);
 				deselect_chip(cmd_buff[2]);
-				usb_serial_write("chp_exec\n",9);
+				usb_serial_write((const uint8_t*)"chp_exec\n",9);
 			}
 		break;
 		default:
