@@ -1,4 +1,4 @@
 #
-default/
+firmware/default/
 DOCS/
-segachips_usb.aps
+firmware/segachips_usb.aps
