@@ -2,3 +2,5 @@
 firmware/default/
 DOCS/
 firmware/segachips_usb.aps
+sn76xPlayer/Debug/
+sn76xPlayer/Release/
