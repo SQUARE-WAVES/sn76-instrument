@@ -2,75 +2,14 @@
 #include <stdint.h>
 #include <livelayer\livelayer.h>
 #include <thread>
+
 #include "sn76_core.h"
 #include "sn76player.h"
+#include "udp_tabler.h"
+#include "lua_wrapper.h"
 
-void core_test(sn76core& core)
+int get_midi_port()
 {
-	using std::cout;
-	using std::cin;
-
-	cout << "testing chip 1, channel 1\n";
-	cin.get();
-	core.set_freq(0,0,0x1d,0x0e);
-	core.set_amp(0,0,0x00);
-
-	cout << "testing chip 1, channel 2\n";
-	cin.get();
-	core.set_amp(0,0,0x0F);
-	core.set_freq(0,1,0x1a,0x0a);
-	core.set_amp(0,1,0x00);
-
-	cout << "testing chip 1, channel 3\n";
-	cin.get();
-	core.set_amp(0,1,0x0F);
-	core.set_freq(0,2,0x17,0x0B);
-	core.set_amp(0,2,0x00);
-
-	cout << "testing chip 1, channel noise\n";
-	cin.get();
-	core.set_amp(0,2,0x0F);
-	core.set_noise(0,0x04);
-	core.set_amp(0,3,0x00);
-	cin.get();
-
-	core.set_amp(0,3,0x0F);
-
-	cout << "test over\n";
-
-}
-
-void voicer_test(sn76core& core)
-{
-	using std::cout;
-	using std::cin;
-	sn76_voicer voicer(&core,1,1);
-
-	cout<<"makin a voicer for chip 2 channel 2\n";
-	cout<<"press <enter> a few times for a major chord!\n";
-	cin.get();
-	voicer.note_on(60,127);
-	cin.get();
-	voicer.note_on(64,127);
-	cin.get();
-	voicer.note_on(67,127);
-	cin.get();
-	voicer.note_off(67,127);
-	cin.get();
-	voicer.note_off(64,127);
-	cin.get();
-	voicer.note_off(60,127);
-	cout<<"it's done!\n";
-
-
-}
-
-int main()
-{
-	event_loop loop;
-	serial_port port(&loop,"COM3");
-	sn76core core(&port);
-
 	int ports = midi_port::count_midi_ports();
 	for(int i=0;i<ports;++i)
 	{
@@ -80,9 +19,26 @@ int main()
 	int inport;
 	std::cin >> inport;
 
-	sn76_player player(&loop,&core,inport);
+	return inport;
+}
 
-	loop.run();
-	std::cin.get();
+int main()
+{
+	udp_port::initialize();
+
+	event_loop main_loop;
+	serial_port port(&main_loop,"COM3");
+	sn76core core(&port);
+
+	std::cout<<"opeing the midi port\n\n";
+	int inport = get_midi_port();
+	sn76_player player(&main_loop,&core,inport);
+
+	std::thread lthread(lua_wrapper::lua_thread,"../config.lua",&main_loop,&player);
+	lthread.detach();
+
+	std::cout << "\n\nStarting the Main Loop\n";
+	main_loop.run();
+	std::cout << "it's over\n";
 	return 0;
 }

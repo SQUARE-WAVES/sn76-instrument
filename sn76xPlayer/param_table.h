@@ -7,10 +7,12 @@ template<class T, int size> class param_table
 		int jump[size];
 		T val[size];
 		int max;
+		int reset_pos;
 
 		param_table()
 		{
 			pos = 0;
+			reset_pos = 0;
 			max = size -1;
 			memset(jump,0,sizeof(jump));
 			memset(val,0,sizeof(val));
@@ -23,7 +25,7 @@ template<class T, int size> class param_table
 
 		void reset()
 		{
-			pos = 0;
+			pos = reset_pos;
 		}
 
 		void set_entry(int pos, T newval, int newjmp)
@@ -33,6 +35,14 @@ template<class T, int size> class param_table
 
 			jump[clipped_pos] = newjmp;
 			val[clipped_pos] = newval;
+		}
+
+		void set_reset(int new_reset)
+		{
+			int clipped = min(new_reset,max);
+			clipped = max(new_reset,0);
+
+			reset_pos = clipped;
 		}
 
 		bool tick()
@@ -47,8 +57,7 @@ template<class T, int size> class param_table
 			}
 			else if( jmp == -1)
 			{
-				nextpos = max(max,pos + 1);
-
+				nextpos = min(max,pos + 1);
 			}
 		
 			if(val[nextpos] != val[pos])
@@ -60,6 +69,4 @@ template<class T, int size> class param_table
 
 			return val_changed;
 		}
-
-		
 };
