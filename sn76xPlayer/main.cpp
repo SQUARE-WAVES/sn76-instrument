@@ -27,7 +27,9 @@ int main()
 	udp_port::initialize();
 
 	event_loop main_loop;
-	serial_port port(&main_loop,"COM3");
+	serial_port port(&main_loop,"COM6");
+
+
 	sn76core core(&port);
 
 	std::cout<<"opeing the midi port\n\n";

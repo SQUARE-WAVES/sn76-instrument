@@ -2,6 +2,8 @@ widgets = dofile("../widgets.lua")
 require("iuplua" )
 require("iupluacontrols")
 
+iup.SetGlobal('DLGBGCOLOR','0 0 0')
+
 local sqr_proto_row = function()
 	return {amp={val=15,jmp=-2}, note={val=0,jmp=-2}, freq={val=0,jmp=-2}}
 end
@@ -32,8 +34,9 @@ local chip1_noise_mod = widgets.ptab(rep_row(noise_proto_row,16),0,2)
 local chip1_noise_view = widgets.matrix(chip1_noise_mod,"chip1 noise",noise_heads)
 
 local tabs = iup.tabs({chip1_channel1_view.box,chip1_channel2_view.box,chip1_noise_view.box})
+tabs.bgcolor = "0 0 0"
 
-dg = iup.dialog{tabs, size="960x420"}
+dg = iup.dialog{tabs, size="960x420",bg_color="0 0 0"}
 dg:show()
 
 if (iup.MainLoopLevel()==0) then

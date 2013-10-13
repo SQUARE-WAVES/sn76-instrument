@@ -47,13 +47,25 @@ function num_cell(min,max,getval,setval,format)
 		end
 	end
 	
+	local key_handlers = {}
+	key_handlers[iup.K_mUP] = function()
+		model.newval_cb(getval() + 1)
+		return true
+	end
+	
+	key_handlers[iup.K_equal] = key_handlers[iup.K_mUP]
+	
+	key_handlers[iup.K_mDOWN] = function()
+		model.newval_cb(getval() - 1)
+		return true
+	end
+	
+	key_handlers[iup.K_minus] = key_handlers[iup.K_mDOWN]
+	
 	model.key_cb = function(key)
-		if key == iup.K_mUP then
-			model.newval_cb(getval() + 1)
-			return true
-		elseif key == iup.K_mDOWN then
-			model.newval_cb(getval() - 1)
-			return true
+		local handler = key_handlers[key]
+		if nil ~= handler then
+			return handler()
 		else
 			return false
 		end
@@ -62,7 +74,7 @@ function num_cell(min,max,getval,setval,format)
 	return model
 end
 
---creates an IUP matrix out of a table of cells (as well as user specified number of collumns
+--creates an IUP matrix out of a table of cells (as well as user specified number of columns)
 local callback_table = function(matmod,title)
 	
 	local cols = matmod.cols
@@ -71,14 +83,15 @@ local callback_table = function(matmod,title)
 	local mat = iup.matrix(
 	{
 		numlin=rows,
-		numcol=cols
+		numcol=cols,
+		bgcolor="0 0 0"
 	})
 	
 	local box = iup.vbox(
 	{
-		iup.fill{},
 		mat,
-		tabtitle=title
+		tabtitle=title,
+		bgcolor="0 0 0",
 	})
 	
 	mat.bgcolor_cb = function(mat,lin,col)

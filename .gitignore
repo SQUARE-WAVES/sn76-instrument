@@ -4,3 +4,10 @@ DOCS/
 firmware/segachips_usb.aps
 sn76xPlayer/Debug/
 sn76xPlayer/Release/
+
+sn76xPlayer/*.suo
+sn76xPlayer/*.sdf
+sn76xPlayer/*.opensdf
+sn76xPlayer/*.opensdf
+sn76xPlayer/*.opensdf
+sn76xPlayer/*.opensdf
