@@ -1,11 +1,15 @@
-#
 firmware/default/
 DOCS/
 firmware/segachips_usb.aps
 sn76xPlayer/Debug/
 sn76xPlayer/Release/
 
-/sn76xPlayer/sn76xPlayer.v11.suo
-/sn76xPlayer/sn76xPlayer.sdf
-/sn76xPlayer/sn76xPlayer.opensdf
-/sn76xPlayer/savedata.json
+sn76xPlayer/sn76xPlayer.sdf
+sn76xPlayer/sn76xPlayer.opensdf
+sn76xPlayer/savedata.json
+sn76xPlayer/sn76xPlayer.sln
+sn76xPlayer/sn76xPlayer.v11.suo
+sn76xPlayer/sn76xPlayer.vcxproj
+sn76xPlayer/sn76xPlayer.vcxproj.filters
+sn76xPlayer/sn76xPlayer.vcxproj.user
+
