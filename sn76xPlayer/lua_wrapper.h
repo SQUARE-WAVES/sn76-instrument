@@ -9,6 +9,7 @@ class lua_wrapper
 {
 	private:
 		lua_State* L;
+		event_loop* loop;
 
 		bool interface_registered;
 
@@ -23,9 +24,9 @@ class lua_wrapper
 		int open_script(const char* path);
 		void print_error();
 		void register_function(const char* name, int (*method) (lua_State* Lwrap));
-		void register_interface(const char* name,event_loop* loop,sn76_player* player);
+		void register_interface(const char* name,event_loop* loop);
 
-		static void lua_thread(const char* path,event_loop* loop,sn76_player* player);
+		static void lua_thread(const char* path,event_loop* loop);
 };
 
 #endif

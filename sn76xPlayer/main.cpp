@@ -27,16 +27,8 @@ int main()
 	udp_port::initialize();
 
 	event_loop main_loop;
-	serial_port port(&main_loop,"COM6");
 
-
-	sn76core core(&port);
-
-	std::cout<<"opeing the midi port\n\n";
-	int inport = get_midi_port();
-	sn76_player player(&main_loop,&core,inport);
-
-	std::thread lthread(lua_wrapper::lua_thread,"../config.lua",&main_loop,&player);
+	std::thread lthread(lua_wrapper::lua_thread,"../config.lua",&main_loop);
 	lthread.detach();
 
 	std::cout << "\n\nStarting the Main Loop\n";

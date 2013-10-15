@@ -54,6 +54,7 @@ function num_cell(min,max,getval,setval,format)
 	end
 	
 	key_handlers[iup.K_equal] = key_handlers[iup.K_mUP]
+	key_handlers[iup.K_plus] = key_handlers[iup.K_mUP]
 	
 	key_handlers[iup.K_mDOWN] = function()
 		model.newval_cb(getval() - 1)

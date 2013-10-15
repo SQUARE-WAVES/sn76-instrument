@@ -28,6 +28,7 @@ class table_entry_message: public event
 		}
 };
 
+const char lua_wrapper::interface_meta_name[] = "LOOPMETA";
 
 int lua_set_amp(lua_State* L)
 {
@@ -179,8 +180,47 @@ int lua_set_wave(lua_State* L)
 	return 0;
 }
 
-const char lua_wrapper::interface_meta_name[] = "LOOPMETA";
+int lua_open_player(lua_State* L)
+{
+	lua_interface_data* ud = (lua_interface_data*)luaL_checkudata(L,1,lua_wrapper::interface_meta_name);
+	int midi_port = luaL_checkint(L,2);
+	const char* com_port = luaL_checkstring(L,3);
 
+	if(ud->player != NULL)
+	{
+		lua_pushnil(L);
+		lua_pushstring(L,"sn76Player is allready open");
+
+		return 2;
+	}
+
+	serial_port* the_port = new serial_port(ud->loop,com_port);
+	sn76core* the_core = new sn76core(the_port);
+	ud->player = new sn76_player(ud->loop,the_core,midi_port);
+
+	luaL_getmetatable(L,lua_wrapper::interface_meta_name);
+
+	//now establish the real metamethods
+	lua_pushcfunction(L,lua_set_amp);
+	lua_setfield(L,-2,"set_amp");
+	
+	lua_pushcfunction(L,lua_set_note);
+	lua_setfield(L,-2,"set_note");
+
+	lua_pushcfunction(L,lua_set_freq);
+	lua_setfield(L,-2,"set_freq");
+
+	lua_pushcfunction(L,lua_set_noiseamp);
+	lua_setfield(L,-2,"set_noiseamp");
+
+	lua_pushcfunction(L,lua_set_wave);
+	lua_setfield(L,-2,"set_wave");
+	//pop the metatable
+	lua_pop(L,1);
+
+	lua_pushboolean(L,true);
+	return 2;
+}
 
 lua_wrapper::lua_wrapper():
 interface_registered(false)
@@ -216,7 +256,7 @@ void lua_wrapper::register_function(const char* name, int (*method) (lua_State* 
 	lua_setglobal(L, name);
 }
 
-void lua_wrapper::register_interface(const char* name,event_loop* loop,sn76_player* player)
+void lua_wrapper::register_interface(const char* name,event_loop* loop)
 {
 	if(interface_registered)
 	{
@@ -225,27 +265,14 @@ void lua_wrapper::register_interface(const char* name,event_loop* loop,sn76_play
 
 	lua_interface_data* ud = (lua_interface_data*)lua_newuserdata(L,sizeof(lua_interface_data));
 	ud->loop = loop;
-	ud->player = player;
+	ud->player = NULL;
 	
 	luaL_newmetatable(L,interface_meta_name);
 	lua_pushvalue(L,-1);
 	lua_setfield(L,-1,"__index");
-	
-	//reg the functions
-	lua_pushcfunction(L,lua_set_amp);
-	lua_setfield(L,-2,"set_amp");
-	
-	lua_pushcfunction(L,lua_set_note);
-	lua_setfield(L,-2,"set_note");
 
-	lua_pushcfunction(L,lua_set_freq);
-	lua_setfield(L,-2,"set_freq");
-
-	lua_pushcfunction(L,lua_set_noiseamp);
-	lua_setfield(L,-2,"set_noiseamp");
-
-	lua_pushcfunction(L,lua_set_wave);
-	lua_setfield(L,-2,"set_wave");
+	lua_pushcfunction(L,lua_open_player);
+	lua_setfield(L,-2,"open");
 
 	lua_setmetatable(L,-2);
 	lua_setglobal(L,name);
@@ -253,11 +280,11 @@ void lua_wrapper::register_interface(const char* name,event_loop* loop,sn76_play
 	interface_registered = true;
 }
 
-void lua_wrapper::lua_thread(const char* script, event_loop* loop, sn76_player* player)
+void lua_wrapper::lua_thread(const char* script, event_loop* loop)
 {
 	lua_wrapper L;
 
-	L.register_interface("sn76",loop,player);
+	L.register_interface("sn76",loop);
 
 	if(0 != L.open_script(script))
 	{
