@@ -4,9 +4,10 @@ require("iupluacontrols")
 require('json')
 
 print("opening interface")
-print(sn76:open(0,"COM6"))
+print(sn76:open(0,"COM3"))
 
 iup.SetGlobal('DLGBGCOLOR','0 0 0')
+
 --[[
 local sqr_proto_row = function()
 	return {amp={val=15,jmp=-2}, note={val=0,jmp=-2}, freq={val=0,jmp=-2}}

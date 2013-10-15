@@ -38,6 +38,8 @@ class sn76_voicer : public monovoicer
 
 		void set_freqtable(int position,int val, int jmp);
 		void set_freq_instrument(int freqset);
+		
+		virtual void set_instrument(int pos);
 };
 
 //voicer for channels 3 and 4
@@ -68,6 +70,8 @@ class sn76_noise_voicer: public sn76_voicer
 
 		void set_wave_table(int position,uint8_t val,int jmp);
 		void set_wave_instrument(int ampset);
+
+		void set_instrument(int pos);
 };
 
 class sn76_player : public midi_port

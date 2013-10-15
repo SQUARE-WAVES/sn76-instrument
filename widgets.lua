@@ -288,6 +288,29 @@ local param_table = function(vals,chip,channel,headers)
 	}
 	
 	mod.vals = vals
+	
+	for index, row in pairs(mod.vals) do
+
+		print(string.format("setting amp! chip: %d channel: %d pos: %d amp: %d jump: %d",chip,channel,index-1,row["amp"]["val"],row["amp"]["jmp"]))
+		sn76:set_amp(chip,channel,index - 1,row["amp"]["val"],row["amp"]["jmp"])
+		
+		print(string.format("setting freq! chip: %d channel: %d pos: %d freq: %d jump: %d",chip,channel,index-1,row["freq"]["val"],row["freq"]["jmp"]))
+		sn76:set_freq(chip,channel,index - 1,row["freq"]["val"],row["freq"]["jmp"])
+		
+		print(string.format("setting note! chip: %d channel: %d pos: %d note: %d jump: %d",chip,channel,index-1,row["note"]["val"],row["note"]["jmp"]))
+		sn76:set_note(chip,channel,index - 1,row["note"]["val"],row["note"]["jmp"])
+		
+		if(row["noiseamp"] ~= nil) then
+			print(string.format("setting noiseamp! chip: %d channel: %d pos: %d amp: %d jump: %d",chip,channel,index-1,row["noiseamp"]["val"],row["noiseamp"]["jmp"]))
+			sn76:set_noiseamp(chip,channel,index-1,row["noiseamp"]["val"],row["noiseamp"]["jmp"])
+		end
+		
+		if(row["wave"] ~= nil) then
+			print(string.format("setting wave! chip: %d channel: %d pos: %d note: %d jump: %d",chip,channel,index-1,row["wave"]["val"],row["wave"]["jmp"]))
+			sn76:set_wave(chip,channel,index-1,row["wave"]["val"],row["wave"]["jmp"])
+		end
+	
+	end
 
 	mod.param_cell = function(param,y)
 		return num_cell(ranges[param][1], ranges[param][2], getter(y,param), setter(y,param,funks[param](chip,channel)), formats[param])

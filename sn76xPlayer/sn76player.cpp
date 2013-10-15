@@ -97,6 +97,13 @@ void sn76_voicer::set_freq_instrument(int ampset)
 	freq_table.set_reset(ampset);
 }
 
+void sn76_voicer::set_instrument(int pos) 
+{
+	set_amp_instrument(pos);
+	set_freq_instrument(pos);
+	set_note_instrument(pos);
+}
+
 void sn76_voicer::set_table(int table,int pos,int val,int jmp)
 {
 	switch(table)
@@ -217,6 +224,15 @@ void sn76_noise_voicer::set_wave_instrument(int ampset)
 	wave_table.set_reset(ampset);
 }
 
+void sn76_noise_voicer::set_instrument(int pos) 
+{
+	set_amp_instrument(pos);
+	set_freq_instrument(pos);
+	set_note_instrument(pos);
+	set_wave_instrument(pos);
+	set_noise_amp_instrument(pos);
+}
+
 void sn76_noise_voicer::set_table(int table,int pos,int val,int jmp)
 {
 	switch(table)
@@ -258,7 +274,7 @@ void sn76_player::midi_callback(unsigned char status, unsigned char data1, unsig
 {
 	uint8_t channel = status & 0x0F;
 	uint8_t msg = status & 0xF0;
-	monovoicer* voice = NULL;
+	sn76_voicer* voice = NULL;
 	bool tick_track = false;
 
 	switch(channel)
@@ -292,7 +308,7 @@ void sn76_player::midi_callback(unsigned char status, unsigned char data1, unsig
 	{
 		switch(msg)
 		{
-			case 0x90:
+			case 0x90: //note on
 				if(data2 == 0)
 				{
 					voice->note_off(data1,data2);
@@ -302,8 +318,11 @@ void sn76_player::midi_callback(unsigned char status, unsigned char data1, unsig
 					voice->note_on(data1,data2);
 				}
 			break;
-			case 0x80:
+			case 0x80: //note off
 				voice->note_off(data1,data2);
+			break;
+			case 0xC0: //prog change
+				voice->set_instrument(data1);
 			break;
 			default:
 				//std::cout<<"unknown msg, status: 0x" << std::hex <<(unsigned int)status<<std::endl;
