@@ -4,27 +4,9 @@ require("iupluacontrols")
 require('json')
 
 print("opening interface")
-print(sn76:open(0,"COM3"))
+print(sn76:open(0,"COM6"))
 
 iup.SetGlobal('DLGBGCOLOR','0 0 0')
-
---[[
-local sqr_proto_row = function()
-	return {amp={val=15,jmp=-2}, note={val=0,jmp=-2}, freq={val=0,jmp=-2}}
-end
-
-local noise_proto_row = function()
-	return {amp={val=15,jmp=-2}, note={val=0,jmp=-2}, freq={val=0,jmp=-2},noiseamp={val=0,jmp=-2},wave={val=0,jmp=-2}}
-end
-
-function rep_row(proto_maker,times)
-	local tab = {}
-	for i=1,times do
-		table.insert(tab,proto_maker())
-	end
-	
-	return tab
-end]]--
 
 local save_data_file = io.open('savedata.json','r')
 local save_data = json.decode(save_data_file:read("*all"))

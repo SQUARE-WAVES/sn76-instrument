@@ -82,11 +82,13 @@
     <ClCompile Include="lua_wrapper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="monovoicer.cpp" />
+    <ClCompile Include="sn76instrument.cpp" />
     <ClCompile Include="sn76player.cpp" />
     <ClCompile Include="sn76_core.cpp" />
     <ClCompile Include="udp_tabler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sn76instrument.h" />
     <ClInclude Include="lua_wrapper.h" />
     <ClInclude Include="monovoicer.h" />
     <ClInclude Include="mtof.h" />

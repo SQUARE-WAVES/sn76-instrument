@@ -1,21 +1,25 @@
-template<class T, int size> class param_table
+#ifndef PARAM_TABLE_DOT_H
+#define PARAM_TABLE_DOT_H
+#include <vector>
+
+template<class T> class param_table
 {
 	private:
 		int pos;
 
 	public:
-		int jump[size];
-		T val[size];
+		std::vector<int> jump;
+		std::vector<T> val;
 		int max;
 		int reset_pos;
 
-		param_table()
+		param_table(unsigned int size):
+		jump(size,0),
+		val(size,0)
 		{
 			pos = 0;
 			reset_pos = 0;
 			max = size -1;
-			memset(jump,0,sizeof(jump));
-			memset(val,0,sizeof(val));
 		}
 
 		T present_val()
@@ -70,3 +74,4 @@ template<class T, int size> class param_table
 			return val_changed;
 		}
 };
+#endif

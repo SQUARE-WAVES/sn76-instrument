@@ -2,7 +2,7 @@ require("iuplua" )
 require("iupluacontrols")
 
 -- Makes a callback cell with the specified forground color.
-function cell(r,g,b)
+local cell = function(r,g,b)
 	local model ={}
 	model.bgcolor_cb = function(mat) return 0,0,0,iup.DEFAULT end
 	model.fgcolor_cb = function(mat) return r,g,b,iup.DEFAULT end
@@ -10,7 +10,7 @@ function cell(r,g,b)
 end
 
 -- extends cell with a label, no editing
-function label_cell(label)
+local label_cell = function(label)
 	local model = cell(0,255,255)
 	model.value_cb = function() return label end
 	model.check_cb = function() return false end
@@ -21,7 +21,7 @@ end
 
 --links up with a numerical model, takes a minimum, a maximum, a way of getting the value
 --a way of setting the value and a formatting function to turn the numerical value into a string
-function num_cell(min,max,getval,setval,format)
+local num_cell = function(min,max,getval,setval,format)
 	local model = cell(0,255,0)
 
 	model.value_cb = function() return format(getval()) end
@@ -131,7 +131,6 @@ local callback_table = function(matmod,title)
 	ret.box = box
 	ret.matrix = mat
 	return ret
-	
 end
 
 
@@ -372,7 +371,6 @@ local table_view = function(ptab,title,heads)
 	end
 	
 	return callback_table(matmod,title)
-	
 end
 
 local exports = {}

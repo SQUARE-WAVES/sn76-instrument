@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 struct lua_interface_data
 {
 	event_loop* loop;

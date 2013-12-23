@@ -33,6 +33,9 @@
     <ClCompile Include="udp_tabler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sn76instrument.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sn76_core.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="udp_tabler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sn76instrument.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
