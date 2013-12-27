@@ -65,40 +65,6 @@ void sn76_voicer::tick()
 	}
 }
 
-void sn76_voicer::set_amptable(int position, uint8_t value, int jump)
-{
-	instrument.amp_table.set_entry(position,value,jump);
-}
-
-void sn76_voicer::set_notetable(int position,int val, int jmp)
-{
-	instrument.note_table.set_entry(position,val,jmp);
-}
-
-void sn76_voicer::set_freqtable(int position, int value, int jump)
-{
-	instrument.freq_table.set_entry(position,value,jump);
-}
-
-void sn76_voicer::set_table(int table,int pos,int val,int jmp)
-{
-	switch(table)
-	{
-		case 0:
-			instrument.amp_table.set_entry(pos,val,jmp);
-		break;
-		case 1:
-			instrument.note_table.set_entry(pos,val,jmp);
-		break;
-		case 2:
-			instrument.freq_table.set_entry(pos,val,jmp);
-		break;
-		default:
-			throw "table doesn't exist";
-		break;
-	}
-}
-
 sn76_noise_voicer::sn76_noise_voicer(sn76core* coreref,int chipnum):
 sn76_voicer(coreref,chipnum,2),
 core(coreref),
@@ -175,41 +141,6 @@ void sn76_noise_voicer::tick()
 		{
 			core->set_noise(chipnum,instrument.wave_table.present_val());
 		}
-	}
-}
-
-void sn76_noise_voicer::set_noise_amp_table(int position, uint8_t value, int jump)
-{
-	instrument.noise_amp_table.set_entry(position,value,jump);
-}
-
-void sn76_noise_voicer::set_wave_table(int position, uint8_t value, int jump)
-{
-	instrument.wave_table.set_entry(position,value,jump);
-}
-
-void sn76_noise_voicer::set_table(int table,int pos,int val,int jmp)
-{
-	switch(table)
-	{
-		case 0:
-			instrument.amp_table.set_entry(pos,val,jmp);
-		break;
-		case 1:
-			instrument.note_table.set_entry(pos,val,jmp);
-		break;
-		case 2:
-			instrument.freq_table.set_entry(pos,val,jmp);
-		break;
-		case 3:
-			instrument.noise_amp_table.set_entry(pos,val,jmp);
-		break;
-		case 4:
-			instrument.wave_table.set_entry(pos,val,jmp);
-		break;
-		default:
-			throw "crazed table guess";
-		break;
 	}
 }
 

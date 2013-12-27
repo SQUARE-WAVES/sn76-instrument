@@ -13,5 +13,7 @@ class sn76_instrument
 		param_table<uint8_t> wave_table;
 
 		sn76_instrument(int size,int noise_size);
+
+		void set_table(int table,int pos,int val,int jmp);
 };
 #endif

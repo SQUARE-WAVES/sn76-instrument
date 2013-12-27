@@ -1,6 +1,15 @@
 #ifndef PARAM_TABLE_DOT_H
 #define PARAM_TABLE_DOT_H
 #include <vector>
+#include <algorithm>
+
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
 
 template<class T> class param_table
 {
@@ -34,8 +43,8 @@ template<class T> class param_table
 
 		void set_entry(int pos, T newval, int newjmp)
 		{
-			int clipped_pos = min(pos,max);
-			clipped_pos = max(clipped_pos,0);
+			int clipped_pos = std::min(pos,max);
+			clipped_pos = std::max(clipped_pos,0);
 
 			jump[clipped_pos] = newjmp;
 			val[clipped_pos] = newval;
@@ -43,8 +52,8 @@ template<class T> class param_table
 
 		void set_reset(int new_reset)
 		{
-			int clipped = min(new_reset,max);
-			clipped = max(new_reset,0);
+			int clipped = std::min(new_reset,max);
+			clipped = std::max(new_reset,0);
 
 			reset_pos = clipped;
 		}
@@ -61,7 +70,7 @@ template<class T> class param_table
 			}
 			else if( jmp == -1)
 			{
-				nextpos = min(max,pos + 1);
+				nextpos = std::min(max,pos + 1);
 			}
 		
 			if(val[nextpos] != val[pos])

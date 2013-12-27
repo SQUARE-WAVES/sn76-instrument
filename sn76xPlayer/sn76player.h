@@ -18,20 +18,12 @@ class sn76_voicer : public monovoicer
 		int chipnum;
 		int channel;
 
-		sn76_instrument instrument;
-
 		void calculate_freq(unsigned char note);
 
 	public:
+		sn76_instrument instrument;
 		sn76_voicer(sn76core* coreref,int chipnum, int channel);
 		void tick();
-
-		virtual void set_table(int table, int position, int val,int jmp);
-		
-		void set_amptable(int position,uint8_t val, int jmp);
-		void set_notetable(int position,int val, int jmp);
-		void set_freqtable(int position,int val, int jmp);
-
 };
 
 //voicer for channels 3 and 4
@@ -49,13 +41,7 @@ class sn76_noise_voicer: public sn76_voicer
 
 	public:
 		sn76_noise_voicer(sn76core* coreref,int chipnum6);
-
 		void tick();
-
-		void set_table(int table, int position, int val,int jmp);
-
-		void set_noise_amp_table(int position,uint8_t val, int jmp);
-		void set_wave_table(int position,uint8_t val,int jmp);
 
 };
 

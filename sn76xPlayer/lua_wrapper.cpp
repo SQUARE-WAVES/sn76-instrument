@@ -23,7 +23,7 @@ class table_entry_message: public event
 		void handle(int iobytes)
 		{
 			sn76_voicer* voicer = player->get_voicer(chip,channel);
-			voicer->set_table(table,pos,val,jump);	
+			voicer->instrument.set_table(table,pos,val,jump);	
 		}
 };
 
