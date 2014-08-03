@@ -3,7 +3,7 @@
 
 #include <livelayer\livelayer.h>
 
-class sn76core
+class sn76_core
 {
 	private:
 		//mostly constants here
@@ -22,7 +22,7 @@ class sn76core
 		serial_port* port;
 
 	public:
-		sn76core(serial_port* portref);
+		sn76_core(serial_port* portref);
 		void set_clock(int chip, uint8_t oct, uint8_t dac_high, uint8_t daclow);
 		void set_freq(int chip, int channel, uint8_t freq_high, uint8_t freq_low);
 		void set_amp(int chip, int channel,uint8_t amp);

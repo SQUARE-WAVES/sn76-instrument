@@ -4,14 +4,17 @@ require("iupluacontrols")
 -- Makes a callback cell with the specified forground color.
 local cell = function(r,g,b)
 	local model ={}
+
 	model.bgcolor_cb = function(mat) return 0,0,0,iup.DEFAULT end
 	model.fgcolor_cb = function(mat) return r,g,b,iup.DEFAULT end
+
 	return model
 end
 
 -- extends cell with a label, no editing
 local label_cell = function(label)
 	local model = cell(0,255,255)
+
 	model.value_cb = function() return label end
 	model.check_cb = function() return false end
 	model.newval_cb = function() return false end
@@ -22,12 +25,12 @@ end
 --links up with a numerical model, takes a minimum, a maximum, a way of getting the value
 --a way of setting the value and a formatting function to turn the numerical value into a string
 local num_cell = function(min,max,getval,setval,format)
-	local model = cell(0,255,0)
+	local base_cell = cell(0,255,0)
 
-	model.value_cb = function() return format(getval()) end
-	model.check_cb = function(newval) return (newval >= min and newval<=max) end
+	base_cell.value_cb = function() return format(getval()) end
+	base_cell.check_cb = function(newval) return (newval >= min and newval<=max) end
 	
-	model.newval_cb = function(newval)
+	base_cell.newval_cb = function(newval)
 		local comp = tonumber(newval)
 		local old = getval()
 		local val
@@ -49,7 +52,7 @@ local num_cell = function(min,max,getval,setval,format)
 	
 	local key_handlers = {}
 	key_handlers[iup.K_mUP] = function()
-		model.newval_cb(getval() + 1)
+		base_cell.newval_cb(getval() + 1)
 		return true
 	end
 	
@@ -57,13 +60,13 @@ local num_cell = function(min,max,getval,setval,format)
 	key_handlers[iup.K_plus] = key_handlers[iup.K_mUP]
 	
 	key_handlers[iup.K_mDOWN] = function()
-		model.newval_cb(getval() - 1)
+		base_cell.newval_cb(getval() - 1)
 		return true
 	end
 	
 	key_handlers[iup.K_minus] = key_handlers[iup.K_mDOWN]
 	
-	model.key_cb = function(key)
+	base_cell.key_cb = function(key)
 		local handler = key_handlers[key]
 		if nil ~= handler then
 			return handler()
@@ -72,7 +75,7 @@ local num_cell = function(min,max,getval,setval,format)
 		end
 	end
 	
-	return model
+	return base_cell
 end
 
 --creates an IUP matrix out of a table of cells (as well as user specified number of columns)
@@ -132,7 +135,6 @@ local callback_table = function(matmod,title)
 	ret.matrix = mat
 	return ret
 end
-
 
 --The model portion of our thing, creates a module for making cells out of 
 --a table for a chip
@@ -289,7 +291,6 @@ local param_table = function(vals,chip,channel,headers)
 	mod.vals = vals
 	
 	for index, row in pairs(mod.vals) do
-
 		print(string.format("setting amp! chip: %d channel: %d pos: %d amp: %d jump: %d",chip,channel,index-1,row["amp"]["val"],row["amp"]["jmp"]))
 		sn76:set_amp(chip,channel,index - 1,row["amp"]["val"],row["amp"]["jmp"])
 		

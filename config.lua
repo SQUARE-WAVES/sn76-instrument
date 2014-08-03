@@ -3,10 +3,12 @@ require("iuplua" )
 require("iupluacontrols")
 require('json')
 
-print("opening interface")
-print(sn76:open(0,"COM6"))
+local sss = create_instrument(10,10)
+print('zip: ',sss)
 
-iup.SetGlobal('DLGBGCOLOR','0 0 0')
+print("opening interface")
+print(sn76:open(0,"COM3"))
+print("it's open!")
 
 local save_data_file = io.open('savedata.json','r')
 local save_data = json.decode(save_data_file:read("*all"))
@@ -66,6 +68,7 @@ save_button.action = function(self)
 	
 	print('shit done saved')
 end
+
 
 local layout = iup.vbox({tabs,save_button})
 

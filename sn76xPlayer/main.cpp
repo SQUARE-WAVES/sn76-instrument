@@ -2,10 +2,10 @@
 #include <stdint.h>
 #include <livelayer\livelayer.h>
 #include <thread>
+#include <vector>
 
 #include "sn76_core.h"
-#include "sn76player.h"
-#include "udp_tabler.h"
+#include "sn76_player.h"
 #include "lua_wrapper.h"
 
 int get_midi_port()
@@ -28,7 +28,7 @@ int main()
 
 	event_loop main_loop;
 
-	std::thread lthread(lua_wrapper::lua_thread,"../config.lua",&main_loop);
+	std::thread lthread(lua_wrapper::lua_thread,"../neoconfig.lua",&main_loop);
 	lthread.detach();
 
 	std::cout << "\n\nStarting the Main Loop\n";

@@ -15,7 +15,6 @@ class monovoicer
 		monovoicer();
 		void note_on(unsigned char note,unsigned char vel);
 		void note_off(unsigned char note,unsigned char vel);
-		
 };
 
 #endif

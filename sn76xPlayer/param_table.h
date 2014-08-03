@@ -11,76 +11,37 @@
 #undef max
 #endif
 
-template<class T> class param_table
+class param_table
 {
-	private:
-		int pos;
-
 	public:
 		std::vector<int> jump;
-		std::vector<T> val;
-		int max;
+		std::vector<int> val;
 		int reset_pos;
+		int val_min;
+		int val_max;
+		int jmp_min;
 
-		param_table(unsigned int size):
-		jump(size,0),
-		val(size,0)
-		{
-			pos = 0;
-			reset_pos = 0;
-			max = size -1;
-		}
+		param_table(unsigned int size,int min, int max);
 
-		T present_val()
-		{
-			return val[pos];
-		}
+		int present_val(int pos);
+		void reset(int& pos);
 
-		void reset()
-		{
-			pos = reset_pos;
-		}
-
-		void set_entry(int pos, T newval, int newjmp)
-		{
-			int clipped_pos = std::min(pos,max);
-			clipped_pos = std::max(clipped_pos,0);
-
-			jump[clipped_pos] = newjmp;
-			val[clipped_pos] = newval;
-		}
-
-		void set_reset(int new_reset)
-		{
-			int clipped = std::min(new_reset,max);
-			clipped = std::max(new_reset,0);
-
-			reset_pos = clipped;
-		}
-
-		bool tick()
-		{
-			int jmp = jump[pos];
-			int nextpos = pos;
-			bool val_changed = false;
-
-			if( jmp >= 0)
-			{
-				nextpos = jmp;
-			}
-			else if( jmp == -1)
-			{
-				nextpos = std::min(max,pos + 1);
-			}
+		int clip_val(int val);
+		int clip_pos(int pos);
+		int clip_jmp(int jmp);
 		
-			if(val[nextpos] != val[pos])
-			{
-				val_changed = true;
-			}
+		void set_val(int pos, int newval);
+		void set_jmp(int pos, int newjmp);
 
-			pos = nextpos;
+		int get_val(int pos);
+		int get_jmp(int pos);
 
-			return val_changed;
-		}
+		void set_entry(int pos, int newval, int newjmp);
+		void set_reset(int new_reset);
+		bool tick(int& pos);
+		void delete_row(int index);
+		void add_row(int index);
+		int get_length();
 };
+
 #endif
